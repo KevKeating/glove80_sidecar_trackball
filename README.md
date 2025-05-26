@@ -122,7 +122,7 @@ which we'll use to remove the existing battery terminal wires from the M575's PC
 1. Make sure that your trackball works correctly.  Connect it to your computer and test cursor movement and all of the buttons.
 1. Screw the threaded rod into the foot, and then screw it into the threaded insert.  You can adjust the tenting of the keyboard and trackball by unscrewing/screwing in the foot, just like the feet on the Glove80.
 ![foot](/images/foot.jpg)
-1. Screw the completed trackball into the right half of your Glove80 using the last two M2.5x8mm screws.  (Take the trackball itself out while your screwing things in.)
+1. Screw the completed trackball into the right half of your Glove80 using the last two M2.5x8mm screws.  (Take the trackball itself out while you're screwing things in.)
 
 ### Additional pictures
 
