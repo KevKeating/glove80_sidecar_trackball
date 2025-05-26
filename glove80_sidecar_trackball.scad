@@ -52,7 +52,7 @@ mouse_button_shell_bottom_thickness = 2;
 mouse_buttons_additional_height = 8.75;
 height_past_left_mouse_button = 9;
 thin_mouse_buttons_palm_wall = 1.1;
-thin_mouse_buttons_thumb_tip_wall = 1;
+thin_mouse_buttons_thumb_tip_wall = 0.5;
 
 /* [Screw and threaded insert sizing] */
 // The outer diameter of the m4 threaded insert used to secure the leg
@@ -170,7 +170,7 @@ mouse_button_pad_elevation = 7;
 mouse_button_mini_pad_reduced_elevation = 1.5;
 mouse_button_main_pad_width = 5;
 mouse_button_mini_pad_width = 4;
-mouse_button_cutout_width = 0.65;
+mouse_button_cutout_width = 1.1;
 mouse_button_length = 75;
 mouse_button_width = 20.5;
 mouse_button_width_left = mouse_button_width;
@@ -1572,6 +1572,8 @@ module mouse_buttons_thumb_tip_end_polyhedron(path_type="shell") {
 module mouse_buttons_shell() {
     new_x_offset = 72.75;
     new_y_offset = 38.5;
+    // toggle this when changing the print orientation
+    shell_assembly_screw_slop = assembly_screw_slop;
     diff() {
         translate(point3d(mouse_buttons_shell_wall_start, mouse_buttons_additional_height)) {
             rotate([90, 0, thumb_cluster_wall_angle + 90])
@@ -1618,14 +1620,15 @@ module mouse_buttons_shell() {
                           mouse_buttons_additional_height + mouse_wheel_pcb_y - mouse_buttons_pcb_y_offset - mouse_button_width_right - height_past_left_mouse_button + mouse_button_shell_bottom_thickness))
             zrot(thumb_cluster_wall_angle) {
                 // the lower assembly screw receiver on the mini button side
-                right(straight_shell_length + assembly_screw_mouse_buttons_bottom_front_x_offset)
-                    tag_diff("keep", "inner_remove", "inner_keep")
-                    cuboid([assembly_screw_receiver_diameter, assembly_screw_threading_total_length, assembly_screw_receiver_diameter],
-                        rounding=assembly_screw_receiver_rounding,
-                        edges=[TOP, FRONT],
-                        anchor=LEFT + BACK + BOTTOM)
-                        position(BACK)
-                            assembly_screw_hole_threaded(BACK, tag="inner_remove");
+                // right(straight_shell_length + assembly_screw_mouse_buttons_bottom_front_x_offset)
+                    // tag_diff("keep", "inner_remove", "inner_keep")
+                    // cuboid([assembly_screw_receiver_diameter, assembly_screw_threading_total_length, assembly_screw_receiver_diameter],
+                    //     rounding=assembly_screw_receiver_rounding,
+                    //     edges=[TOP, FRONT],
+                    //     except=BACK,
+                    //     anchor=LEFT + BACK + BOTTOM)
+                    //     position(BACK)
+                    //         assembly_screw_hole_threaded(BACK, tag="inner_remove", slop=shell_assembly_screw_slop);
                 // the screw hole on bottom of the main button side
                 translate([assembly_screw_receiver_diameter / 2 - mouse_buttons_back_thickness * cos(thumb_cluster_wall_angle),
                            -assembly_screw_receiver_diameter / 2 - assembly_screw_mouse_buttons_bottom_rear_y_offset,
@@ -1636,21 +1639,35 @@ module mouse_buttons_shell() {
         tag_intersect("keep", "intersect", "inner_keep") {
             translate(point3d(mouse_buttons_shell_wall_start,
                             mouse_buttons_additional_height + mouse_wheel_pcb_y - mouse_buttons_pcb_y_offset + assembly_screw_mouse_buttons_top_front_z_offset))
-                zrot(thumb_cluster_wall_angle) {
-                    right(straight_shell_length - assembly_screw_mouse_buttons_top_front_x_offset)
-                    tag_diff("intersect", "inner_remove", "inner_inner_keep")
-                        cuboid([2 * assembly_screw_receiver_diameter, assembly_screw_threading_total_length - 1, 2 * assembly_screw_receiver_diameter],
-                                rounding=assembly_screw_receiver_rounding,
-                                edges=LEFT + FRONT + BOTTOM,
-                                anchor=LEFT + BACK + BOTTOM) {
-                            edge_profile(RIGHT + FRONT)
-                                tag("inner_remove")
-                                mask2d_chamfer(x=6, y=6);
-                            position(LEFT + BACK + BOTTOM)
-                                translate([assembly_screw_receiver_diameter / 2, 0, assembly_screw_receiver_diameter / 2])
-                                assembly_screw_hole_threaded(BACK, tag="inner_remove", length=assembly_screw_threading_length - 1);
-                            }
-                }
+                zrot(thumb_cluster_wall_angle)
+                    tag_diff("intersect", "inner_remove", "inner_inner_keep")  {
+                        right(straight_shell_length - assembly_screw_mouse_buttons_top_front_x_offset)
+                            cuboid([2 * assembly_screw_receiver_diameter, assembly_screw_threading_total_length - 1, 2 * assembly_screw_receiver_diameter],
+                                    rounding=assembly_screw_receiver_rounding,
+                                    edges=LEFT + FRONT + BOTTOM,
+                                    anchor=LEFT + BACK + BOTTOM) {
+                                edge_profile(RIGHT + FRONT)
+                                    tag("inner_remove")
+                                    mask2d_chamfer(x=6, y=6);
+                                position(LEFT + BACK + BOTTOM)
+                                    translate([assembly_screw_receiver_diameter / 2, 0, assembly_screw_receiver_diameter / 2])
+                                    assembly_screw_hole_threaded(BACK, tag="inner_remove", length=assembly_screw_threading_length - 1, slop=shell_assembly_screw_slop);
+                                // strengthen the palm end side so it doesn't split between the buttons
+                                position(RIGHT + BACK + BOTTOM)
+                                    right(10)
+                                    cuboid([17, 5, 35], anchor=RIGHT+ BACK + TOP);
+                                }
+                        translate([straight_shell_length + assembly_screw_mouse_buttons_bottom_front_x_offset,
+                                   0,
+                                   -assembly_screw_mouse_buttons_top_front_z_offset - mouse_button_width_right - height_past_left_mouse_button + mouse_button_shell_bottom_thickness])
+                        cuboid([assembly_screw_receiver_diameter, assembly_screw_threading_total_length, assembly_screw_receiver_diameter],
+                        rounding=assembly_screw_receiver_rounding,
+                        edges=[TOP, FRONT],
+                        except=BACK,
+                        anchor=LEFT + BACK + BOTTOM)
+                        position(BACK)
+                            assembly_screw_hole_threaded(BACK, tag="inner_remove", slop=shell_assembly_screw_slop);
+                    }
             translate(point3d(mouse_buttons_shell_wall_start + straight_shell_length * thumb_cluster_unit_vector, mouse_buttons_additional_height))
                 rotate([90, 0, thumb_cluster_wall_angle + 90]) {
                     vnf_polyhedron(vnf_palm_end_solid, convexity=10);
@@ -1669,19 +1686,19 @@ module mouse_buttons_shell() {
                     except=BACK,
                     anchor=LEFT + BACK + TOP)
                     position(BACK)
-                        assembly_screw_hole_threaded(BACK, tag="inner_remove");
+                        assembly_screw_hole_threaded(BACK, tag="inner_remove", slop=shell_assembly_screw_slop);
         
         // a small brace inside the top wall for the mouse button back wall
-        translate(point3d(mouse_buttons_shell_wall_start,
-                          mouse_buttons_additional_height - mouse_button_shell_top_thickness))
-            zrot(thumb_cluster_wall_angle)
-                right(15)
-                tag("keep")
-                cuboid([8, wall_thickness, 2],
-                       rounding=1,
-                       edges=FRONT,
-                       except=TOP,
-                       anchor=BACK + TOP);
+        // translate(point3d(mouse_buttons_shell_wall_start,
+        //                   mouse_buttons_additional_height - mouse_button_shell_top_thickness))
+        //     zrot(thumb_cluster_wall_angle)
+        //         right(15)
+        //         tag("keep")
+        //         cuboid([8, wall_thickness, 2],
+        //                rounding=1,
+        //                edges=FRONT,
+        //                except=TOP,
+        //                anchor=BACK + TOP);
 
         mouse_buttons_thumb_tip_end_polyhedron();
         // add a wall to fill in the space above the side wall
@@ -1691,9 +1708,16 @@ module mouse_buttons_shell() {
                 cuboid([mouse_button_thickness - thin_mouse_buttons_thumb_tip_wall,
                         wall_above_side_wall_length,
                         mouse_buttons_additional_height],
-                    chamfer=sidecar_outer_edge_chamfer,
-                    edges=RIGHT + TOP,
-                    anchor=RIGHT + FRONT + BOTTOM);
+                       chamfer=sidecar_outer_edge_chamfer,
+                       edges=RIGHT + TOP,
+                       anchor=RIGHT + FRONT + BOTTOM)
+                    position(LEFT + BOTTOM)
+                        cuboid([mouse_buttons_additional_height - mouse_button_shell_top_thickness,
+                               wall_above_side_wall_length,
+                               mouse_buttons_additional_height],
+                              chamfer=mouse_buttons_additional_height - mouse_button_shell_top_thickness,
+                              edges=LEFT + BOTTOM,
+                              anchor=RIGHT + BOTTOM);
             tag("inner_remove")
                 mouse_buttons_back_wall_undecorated();
         }
@@ -2108,11 +2132,13 @@ module mouse_buttons_switch_pads(height) {
                    edges=[LEFT + FRONT, LEFT + BACK],
                    anchor=LEFT + BACK + BOTTOM) {
                 position(LEFT + BACK + BOTTOM)
-                    right(mouse_button_main_pad_width / 2)
-                    cuboid([mouse_button_switch_pad_bar_width,
+                    // right(mouse_button_main_pad_width / 2)
+                    cuboid([6,
                             8,
                             mouse_button_switch_pad_bar_height],
-                        anchor=BACK + TOP);
+                            rounding=3,
+                            edges=LEFT + BACK,
+                        anchor=LEFT + BACK + TOP);
                 position(RIGHT + FRONT)
                     down(mouse_button_switch_pad_bar_height)
                     // we move this fwd (towards the top of the mouse button
@@ -2140,12 +2166,12 @@ module mouse_buttons_switch_pads(height) {
         cuboid([mouse_button_main_pad_width + 1.5, mouse_button_main_pad_width + 13, 20],
                anchor=BOTTOM + RIGHT + FRONT) {
             position(RIGHT + FRONT + BOTTOM) {
-                cuboid([mouse_button_main_pad_width + 1.5, mouse_button_main_pad_width + 1.5, 1], anchor=RIGHT + FRONT + TOP);
-                left(mouse_button_main_pad_width / 2)
-                    cuboid([mouse_button_switch_pad_bar_width,
-                            5.5,
-                            mouse_button_switch_pad_bar_height + 1],
-                        anchor=FRONT + TOP);
+                cuboid([mouse_button_main_pad_width + 1.5, mouse_button_main_pad_width + 1.5, mouse_button_switch_pad_bar_height + 1], anchor=RIGHT + FRONT + TOP);
+                // left(mouse_button_main_pad_width / 2)
+                //     cuboid([mouse_button_switch_pad_bar_width,
+                //             5.5,
+                //             mouse_button_switch_pad_bar_height + 1],
+                //         anchor=FRONT + TOP);
             }
             position(LEFT + BACK)
                 // up(0.25)
