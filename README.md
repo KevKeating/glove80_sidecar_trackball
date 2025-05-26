@@ -9,14 +9,16 @@ A 3D printed trackball designed to fit into the sidecar module of the [MoErgo Gl
 ### Features
 
 - All of the M575's buttons and the mouse wheel are fully functional.  They're placed outside outside of the Glove80's thumb cluster and are intended to be operated by your right thumb.  If you don't want to use them, the Glove80 allows you to configure keyboard keypresses to act as mouse clicks.
-- The connection button is accessible on the side of the trackball, which allows you to toggle between a Bluetooth connection and the USB receiver.  The connection light is also visible next to the button: blue for bluetooth, white for USB.
+- The connection button is accessible on the side of the trackball, which allows you to toggle between a Bluetooth connection and the USB receiver.  The connection light is also visible next to the button: blue for Bluetooth, white for USB.
 - The trackball has an adjustable foot for tenting.
 
 ### Notes
 
-Assembly instructions are below.  The assembly will require a bit of soldering to attach new battery terminals.  You'll also need to remove the existing battery terminals, but that can be accomplished with some tin snips or something similar if you don't want to worry about desoldering.
+There are six plates in the 3MF file, but don't print all of them!  Print the first plate ("Main body") in whatever color you want for the body.  Print the second plate, which contains the cover for the connection light, in a translucent filament.  (It's only about 0.1 g of filament, so it's a very, very fast print.)  Then print **one** of the remaining plates, depending on what size trackball you're planning on using.
 
-I printed most of the parts in PLA or PLA+, so that's what the tolerances are set for.  For the foot, I used TPU for the bottom few layers (to give it more grip) and PETG for the rest, but PLA/PLA+ will work fine there as well.  If you need something that's more temperature resistant, the trackball should work with PETG with some minor tweaks, although I haven't tested it.  You'll likely need to increase the number of walls when printing the mouse button shell to give it more rigidity, and the screw holes may be a bit snug as well.
+I printed most of the parts in PLA or PLA+, so that's what the tolerances are set for.  I printed the connection light cover in PETG, but you could use translucent PLA instead if desired.  For the foot, I used TPU for the bottom few layers (to give it more grip) and PETG for the rest, but PLA/PLA+ will work fine there as well.  The entire trackball could be likely printed in PETG if you wanted, altough you'd probably need some minor tweaks: You'll likely need to increase the number of walls when printing the mouse button shell to give it more rigidity, and the screw holes may be a bit snug as well.
+
+Assembly instructions are below.  The assembly will require a bit of soldering to attach new battery terminals.  You'll also need to remove the existing battery terminals, but that can be accomplished with some tin snips or something similar if you don't want to worry about desoldering.
 
 This design mounts the mouse wheel upside-down, which was necessary to arrange the mouse buttons comfortably since they're on the same PCB.  Your OS should have an option for inverting the mouse wheel if you want it to work normally.
 
