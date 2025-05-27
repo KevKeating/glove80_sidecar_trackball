@@ -132,6 +132,10 @@ which we'll use to remove the existing battery terminal wires from the M575's PC
 ![Photo of the completed trackball from above](/images/overview3.jpg)
 ![Rear - battery compartment open](/images/rear_open.jpg)
 ![Rear - battery compartment closed](/images/rear_closed.jpg)
+![Render of front, closed](/images/render_front_closed.png)
+![Render of front, open](/images/render_front_open.png)
+![Render of back, closed](/images/render_back_closed.png)
+![Render of back, open](/images/render_back_open.png)
 
 ### License
 
