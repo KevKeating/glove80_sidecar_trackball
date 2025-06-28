@@ -85,6 +85,9 @@ which we'll use to remove the existing battery terminal wires from the M575's PC
     ![connection button](/images/connection_button.jpg)
 
     Everything else can be set aside.
+1. Remove the mouse wheel on the mouse buttons PCB.  Pull the mouse wheel gently away from the encoder (the silver thing that it's mounted in) and it should pop out.
+1. If you printed the two-part mouse wheel, put the TPE ring around the inner piece.
+1. Install the new mouse wheel by sliding the smaller hex-shaped end into the encoder.
 1. Remove the battery wires/mount from the main PCB.
     - If you want to desolder the wires, you'll probably need to sand the solder globs on the back of the board.  At least on mine, there was some sort of soldering-iron-resistant coating applied.  After that, you can use a desoldering wick and/or a solder sucker.  You'll probably want to add a bit of flux or fresh solder to the factory solder so that it'll flow more easily.
     - If you don't want to desolder the wires (or if you can get up enough of the factory solder), you can instead clip the wires using tin snips or something similar.
