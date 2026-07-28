@@ -30,7 +30,7 @@ You can get some cool patterns around the trackball if you adjust the bottom sur
 
 - Logitech Ergo M575 trackball
 - a larger trackball (optional - you can use the 34 mm ball from the M575 if you want)
-- 20x M2.5x8mm screws, button head
+- 24x M2.5x8mm screws, button head
 - 1x M4 x 40mm threaded rod
 - 1x M4 heat set threaded insert, 6 mm OD, 8 mm length
 - 3x 2.5mm bearing balls (I used zirconium oxide G5 balls)
